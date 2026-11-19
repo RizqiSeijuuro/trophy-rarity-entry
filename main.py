@@ -140,6 +140,10 @@ def weighted_residual_std(xs: list[float], ys: list[float], ws: list[float], a: 
 def forecast_trophy(reads: list[tuple[datetime, float]], target: datetime, horizon_days: float) -> list[float]:
     """Build the five logit-scale quantile offsets' base (predicted logit) and spread for one trophy.
 
+    Note on the shrinkage factor n / (n + SHRINK_K): with SHRINK_K == 4, two reads (n=2) trust the fitted
+    slope only 2/6 = 1/3 of the way, while fifty reads trust it 50/54 ~= 0.93 of the way, so the clamp and
+    the residual-based spread below are doing most of the safety work while data is still thin.
+
     `reads` is this trophy's own valid (non-null) (at, rate_percent) pairs from the case's history, oldest
     first; there is always at least the case's own last read for every forecast trophy, but this is
     defensive about the (rules say it shouldn't happen) empty case too.
