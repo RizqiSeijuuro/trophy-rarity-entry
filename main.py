@@ -77,6 +77,7 @@ MAX_HORIZON_SPAN_SCALE = 6.0
 MIN_SPAN_HOURS = 0.5
 
 
+# Keeps percentages strictly inside (0, 100) so logit() never takes log(0) or divides by zero.
 def clamp_pct(x: float) -> float:
     return min(99.99, max(0.01, x))
 
